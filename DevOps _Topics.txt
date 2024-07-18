@@ -7,24 +7,29 @@ Topics we study during internship till now
 5) Docker Compose and Networking, Volume
 6) Nginx(Reverse Proxy and Load Balancing)
 7) SSH
-8) Laravel Sail
+8) Laravel Sail( A Developer tool for managing laravel projects through container)
 9) Reverse proxy(Proxy Concepts and its Types)
 10)Deploy Laravel project on Local machine
 11)GitLab(CI/CD, Runners, Artifacts, Variables)
 12)Mysql and its configuration
 13)Shell Scripting & Make File concepts.
 14)Run Mongo Db inside container
-15)Deploy 2 different project with the help of docker compose(Laravel Project, MyOwn Fyp,Deploy PHP project).
+15)Deploy 2 different project with the help of docker compose(Laravel Project, MyOwn Fyp,Deploy PHP project,Deploy 6 container Application on docker,Mern Stack, Angular, Next js).
 16)Cypress web testing tool framework(Read and learn how to use and configure in CI/CD pipeline)
 17)Learning about Ansible and Configuration Management.
-18)Kubernetes and Container Orchestration with minikube openshift
+18)Kubernetes and Container Orchestration with minikube & Red Hat Openshift
 19)Containerize angular js project
-20)Deploy Mern Stack project on local
+20)Deploy Mern Stack project on local and Docker
 21)Deploy a frontend React App on Kubernetes Minikube.
 22)Make and learn CI/CD concepts more deeply.
 23)Practicing GitHub action CI/CD and GitHub commands. 
-24)PM2
-
+24)PM2(a project management tool for JavaScript)
+25)Jenkins Server CI/CD and learn about pipelines and plugins.
+26)AWS(Public,Private,Hybrid cloud, IAM, EC2, S3 Bucket)
+27)DevSecOps( Sast tool, Dast tool,Synk, Trivy, OWASP Zap)
+28)Postgre SQL
+29)Podman(alternative to docker)
+30)Firewall, Network Security, DNS, FTP, HTTP, HTTPS, NFS, Samba Server&Proctocol
 
 
 
