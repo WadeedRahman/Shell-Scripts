@@ -1,0 +1,84 @@
+Pipeline 1
+
+stages:
+    - test
+    - test_failed
+    - test_success
+
+tests_stage:
+   stage: test
+   tags: 
+       - fe-entelijant
+
+   script: |
+        cd /var/www/fe-app 
+        git fetch --all
+        git checkout $CI_COMMIT_SHA
+        npm install 
+        npx cypress run --headless
+   rules:
+        - if: $CI_COMMIT_BRANCH == "staging" && $CI_PIPELINE_SOURCE == "push"
+   artifacts:
+      paths:
+        - output/
+      expire_in: 1 day
+
+tests_failed_stage:
+    stage: test_failed
+    tags:
+         - fe-entelijant
+    script: |
+        cd /var/www/fe-app
+        git checkout staging
+        npm install
+        npm run build
+    rules:
+        - exists:
+              - tests_stage
+        - when: on_failure
+    dependencies:
+              - tests_stage
+
+tests_success_stage:
+     stage: test_success
+     tags:
+           - fe-entelijant
+     script: |
+           cd /var/www/fe-app && 
+           git checkout staging &&
+           git pull origin staging && 
+           npm install &&
+           npm run build &&
+           pm2 restart fe-app
+     rules:
+           - exists:
+             - tests_stage
+           - when: on_success
+     dependencies:
+           - tests_stage
+
+
+
+
+
+Pipeline2
+stages:
+    - staging
+
+staging_stage:
+    stage: staging
+    tags:
+        - be-entelijant
+    script:
+        - cd /var/www/html  &&
+          git checkout staging &&
+          git pull origin staging &&
+          composer install &&
+          php artisan optimize && php artisan migrate --force
+    rules:
+        - if: $CI_COMMIT_BRANCH == "staging" && $CI_PIPELINE_SOURCE == "push"
+ 
+ 
+          
+          
+
