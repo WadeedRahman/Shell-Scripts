@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# MySQL Credentials
+MYSQL_USER="root"
+MYSQL_PASS=""
+
+# Backup Directory
+BACKUP_DIR="$HOME/BackupMysql"
+
+# Create Backup Directory if it doesn't exist
+mkdir -p "$BACKUP_DIR"
+
+# Get List of Databases (excluding system databases)
+databases=$(mysql -u"$MYSQL_USER" -p"$MYSQL_PASS" -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema|performance_schema|mysql|sys)")
+
+# Loop through each database and back it up
+for db in $databases; do
+    echo "Backing up database: $db"
+    mysqldump -u"$MYSQL_USER" -p"$MYSQL_PASS" "$db" > "$BACKUP_DIR/$db.sql"
+    if [ $? -eq 0 ]; then
+        echo "Backup successful for: $db"
+    else
+        echo "Backup failed for: $db"
+    fi
+done
+
+echo "All backups are stored in $BACKUP_DIR"
