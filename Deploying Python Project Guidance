@@ -1,0 +1,216 @@
+## Documentation for Setting Up and Managing a Flask Application on an EC2 Instance
+
+---
+
+### Prerequisites
+1. An EC2 instance with Ubuntu.
+2. Nginx installed.
+3. Flask application ready to deploy.
+4. PM2 installed (optional).
+5. Gunicorn installed.
+6. Miniconda or any Python environment set up.
+
+---
+
+### Initial Setup and Configuration
+
+#### Step 1: Install Required Packages
+
+1. **Update the package list and install Nginx:**
+    ```sh
+    sudo apt update
+    sudo apt install nginx -y
+    ```
+
+2. **Install Node.js and PM2 (optional):**
+    ```sh
+    sudo apt install nodejs npm -y
+    sudo npm install pm2@latest -g
+    ```
+
+3. **Install Miniconda and set up a Python environment (if not already done):**
+    ```sh
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    bash Miniconda3-latest-Linux-x86_64.sh
+    source ~/.bashrc
+    conda create -n meet python=3.8
+    conda activate meet
+    ```
+
+4. **Install Flask and Gunicorn in the environment:**
+    ```sh
+    pip install flask gunicorn
+    ```
+
+#### Step 2: Create the Flask Application
+
+1. **Create a simple Flask app (e.g., `app.py`):**
+    ```python
+    from flask import Flask
+
+    app = Flask(__name__)
+
+    @app.route('/join')
+    def join():
+        return "Hello from Flask!"
+
+    if __name__ == '__main__':
+        app.run(host='0.0.0.0', port=5000)
+    ```
+
+---
+
+### Using PM2 to Manage the Flask Application (Optional)
+
+#### Step 1: Start the Flask App with PM2
+
+1. **Navigate to your Flask app directory and start it with PM2:**
+    ```sh
+    pm2 start app.py --interpreter python3
+    ```
+
+#### Step 2: Configure Nginx to Proxy Requests to Flask
+
+1. **Edit Nginx configuration file:**
+    ```sh
+    sudo nano /etc/nginx/sites-available/flask_app
+    ```
+
+2. **Add the following configuration:**
+    ```nginx
+    server {
+        listen 80;
+        server_name your-ec2-public-ip;
+
+        location / {
+            proxy_pass http://127.0.0.1:5000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+    ```
+
+3. **Create a symbolic link to enable the site:**
+    ```sh
+    sudo ln -s /etc/nginx/sites-available/flask_app /etc/nginx/sites-enabled/
+    ```
+
+4. **Test and restart Nginx:**
+    ```sh
+    sudo nginx -t
+    sudo systemctl restart nginx
+    ```
+
+---
+
+### Using Gunicorn and Systemd to Manage the Flask Application
+
+#### Step 1: Verify the Path to Gunicorn
+
+1. **Find the path to Gunicorn:**
+    ```sh
+    which gunicorn
+    ```
+
+    For example, it might return:
+    ```
+    /home/asad/miniconda3/envs/meet/bin/gunicorn
+    ```
+
+#### Step 2: Create the Systemd Service File
+
+1. **Create and edit the systemd service file:**
+    ```sh
+    sudo nano /etc/systemd/system/gunicorn.service
+    ```
+
+2. **Add the following configuration:**
+    ```ini
+    [Unit]
+    Description=Gunicorn instance to serve Flask app
+    After=network.target
+
+    [Service]
+    User=USER_NAME
+    Group=www-data
+    WorkingDirectory=/home/USER_NAME/my_flask_app
+    ExecStart=/usr/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 app:app
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
+
+#### Step 3: Reload Systemd and Start the Service
+
+1. **Reload systemd to apply changes:**
+    ```sh
+    sudo systemctl daemon-reload
+    ```
+
+2. **Start the Gunicorn service:**
+    ```sh
+    sudo systemctl start gunicorn
+    ```
+
+3. **Enable the service to start on boot:**
+    ```sh
+    sudo systemctl enable gunicorn
+    ```
+
+4. **Check the status of the service:**
+    ```sh
+    sudo systemctl status gunicorn
+    ```
+
+#### Step 4: Troubleshoot (if necessary)
+
+1. **Check detailed logs if there are issues:**
+    ```sh
+    sudo journalctl -u gunicorn.service
+    ```
+   or 
+   ```sh
+    sudo journalctl -u gunicorn.service -f
+
+    ```
+
+---
+
+### Configuring Nginx for Gunicorn
+
+Ensure your Nginx configuration file `/etc/nginx/sites-available/flask_app` is correctly set to proxy pass to your Flask app running on port 5000.
+
+1. **Edit the Nginx configuration file if necessary:**
+    ```nginx
+    server {
+        listen 80;
+        server_name your-ec2-public-ip;
+
+        location / {
+            proxy_pass http://127.0.0.1:5000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+    ```
+
+2. **Test and restart Nginx:**
+    ```sh
+    sudo nginx -t
+    sudo systemctl restart nginx
+    ```
+
+### Summary
+
+- **Set up and configure Nginx.**
+- **Optionally use PM2 to manage the Flask app.**
+- **Configure Gunicorn to run as a systemd service for better process management.**
+- **Configure Nginx to proxy requests to the Flask app.**
+- **Reload and restart necessary services.**
+- **Check logs and status for troubleshooting.**
+
+By following these steps, you can ensure that your Flask application is properly managed and served on your EC2 instance.
