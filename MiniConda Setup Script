@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Define installation directory
+INSTALL_DIR="$HOME/miniconda3"
+
+# Create the installation directory if it doesn't exist
+mkdir -p "$INSTALL_DIR"
+
+# Download the Miniconda installer
+echo "Downloading Miniconda installer..."
+wget -q --show-progress https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O "$INSTALL_DIR/miniconda.sh"
+
+# Run the installer in silent mode
+echo "Installing Miniconda..."
+bash "$INSTALL_DIR/miniconda.sh" -b -u -p "$INSTALL_DIR"
+
+# Remove the installer to save space
+echo "Cleaning up..."
+rm "$INSTALL_DIR/miniconda.sh"
+
+# Activate Miniconda
+echo "Activating Miniconda..."
+source "$INSTALL_DIR/bin/activate"
+
+# Initialize Conda for all supported shells
+echo "Initializing Conda for all shells..."
+conda init --all
+
+# Notify the user
+echo "Miniconda installation and initialization complete. Please restart your shell or run 'source ~/.bashrc'."
