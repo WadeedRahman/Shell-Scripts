@@ -1,0 +1,48 @@
+This fle is use for Proxy for Phpmyadmin if you are using Multiple Versions
+
+# phpMyAdmin default Apache configuration
+Alias /phpmyadmin /usr/share/phpmyadmin
+
+<Directory /usr/share/phpmyadmin>
+    Options FollowSymLinks
+    DirectoryIndex index.php
+
+    # PHP 8.3 FPM Handler using proxy_fcgi
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/run/php/php8.3-fpm.sock|fcgi://localhost/"
+    </FilesMatch>
+
+    # Limit access and set PHP configurations
+    <IfModule mod_php.c>
+        php_admin_value upload_tmp_dir /var/lib/phpmyadmin/tmp
+        php_admin_value open_basedir /usr/share/phpmyadmin/:/usr/share/doc/phpmyadmin/:/etc/phpmyadmin/:/var/lib/phpmyadmin/:/usr/share/php/
+    </IfModule>
+
+    # Enable gzip compression for better performance
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/json
+</Directory>
+
+# Disallow web access to directories that don't need it
+<Directory /usr/share/phpmyadmin/templates>
+    Require all denied
+</Directory>
+
+<Directory /usr/share/phpmyadmin/libraries>
+    Require all denied
+</Directory>
+
+<Directory /usr/share/phpmyadmin/setup/lib>
+    Require all denied
+</Directory>
+
+
+
+
+#If you are trying to access phpmyadmin on Ip_address/phpmyadmin add this line on Apache Configuration
+Include /etc/phpmyadmin/apache.conf
+
+
+<Directory /usr/share/phpmyadmin/js>
+    Options FollowSymLinks
+    Require all granted
+</Directory>
