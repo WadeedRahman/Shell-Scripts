@@ -1,0 +1,225 @@
+## **Step 1: Install and Configure Promtail for Log Forwarding**
+Grafana does not collect logs directly, so you need **Promtail** to send logs from Laravel to **Loki**, which Grafana will use as a data source.
+
+### **1.1 Install Promtail on Your Server**
+Download the latest Promtail binary:
+
+curl -O -L "https://github.com/grafana/loki/releases/latest/download/promtail-linux-amd64.zip"
+unzip promtail-linux-amd64.zip
+chmod +x promtail-linux-amd64
+sudo mv promtail-linux-amd64 /usr/local/bin/promtail
+
+### **1.2 Configure Promtail to Read Laravel Logs**
+Create a Promtail configuration file:
+
+sudo nano /etc/promtail-config.yml
+
+
+Add the following configuration:
+
+server:
+  http_listen_port: 9080
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://localhost:3100/loki/api/v1/push  # Loki URL
+
+scrape_configs:
+  - job_name: "laravel-logs"
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: "laravel"
+          host: "my-laravel-server"
+          __path__: "/var/www/html/storage/logs/*.log"
+```
+
+- Ensure `__path__` points to your Laravel log directory (`storage/logs`).
+- Replace `my-laravel-server` with your actual server name.
+
+### **1.3 Start Promtail**
+Run Promtail:
+
+promtail -config.file=/etc/promtail-config.yml
+
+To make Promtail run as a service:
+
+sudo nano /etc/systemd/system/promtail.service
+
+Add the following:
+
+[Unit]
+Description=Promtail
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/promtail -config.file=/etc/promtail-config.yml
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Reload systemd and start Promtail:
+
+sudo systemctl daemon-reload
+sudo systemctl enable --now promtail
+
+
+## **Step 2: Install and Configure Loki for Log Storage**
+Loki stores logs and integrates with Grafana.
+
+### **2.1 Install Loki**
+curl -O -L "https://github.com/grafana/loki/releases/latest/download/loki-linux-amd64.zip"
+unzip loki-linux-amd64.zip
+chmod +x loki-linux-amd64
+sudo mv loki-linux-amd64 /usr/local/bin/loki
+
+### **2.2 Configure Loki**
+Create a config file:
+
+sudo nano /etc/loki-config.yml
+
+Add this`yaml file
+
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+
+ingester:
+  lifecycler:
+    address: 127.0.0.1
+    ring:
+      kvstore:
+        store: inmemory
+      replication_factor: 1
+    final_sleep: 0s
+  chunk_idle_period: 5m
+  chunk_retain_period: 30s
+  max_transfer_retries: 0
+  flush_op_timeout: 10s
+
+schema_config:
+  configs:
+    - from: 2023-01-01
+      store: boltdb-shipper
+      object_store: filesystem
+      schema: v11
+      index:
+        prefix: index_
+        period: 24h
+
+storage_config:
+  boltdb_shipper:
+    active_index_directory: /tmp/loki/index
+    cache_location: /tmp/loki/cache
+    shared_store: filesystem
+
+  filesystem:
+    directory: /tmp/loki/chunks
+
+limits_config:
+  enforce_metric_name: false
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h
+
+chunk_store_config:
+  max_look_back_period: 0s
+
+table_manager:
+  retention_deletes_enabled: false
+  retention_period: 0s
+
+
+Save and start Loki:
+
+loki -config.file=/etc/loki-config.yml
+
+
+To run Loki as a service:
+
+sudo nano /etc/systemd/system/loki.service
+
+Add:
+
+[Unit]
+Description=Loki Log Aggregation System
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/loki -config.file=/etc/loki-config.yml
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Reload systemd and start Loki:
+
+sudo systemctl daemon-reload
+sudo systemctl enable --now loki
+
+
+## **Step 3: Install and Configure Grafana**
+### **3.1 Install Grafana**
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
+sudo apt-get update
+sudo apt-get install -y grafana
+
+### **3.2 Start Grafana**
+sudo systemctl start grafana-server
+sudo systemctl enable grafana-server
+
+---
+
+## **Step 4: Configure Grafana to Use Loki**
+### **4.1 Access Grafana**
+Open a browser and go to:
+
+```
+http://<your-server-ip>:3000
+```
+
+Login with:
+- **Username**: `admin`
+- **Password**: `admin` (change after login)
+
+### **4.2 Add Loki as a Data Source**
+1. Go to **Configuration** → **Data Sources**.
+2. Click **Add Data Source**.
+3. Select **Loki**.
+4. Set URL to:
+
+   ```
+   http://localhost:3100
+   ```
+
+5. Click **Save & Test**.
+
+### **4.3 Create a Dashboard**
+1. Click **Create** → **Dashboard**.
+2. Click **Add a New Panel**.
+3. In the **Query** section:
+   - Select **Loki** as the Data Source.
+   - Enter the following query to filter Laravel logs:
+
+     ```logql
+     {job="laravel"}
+     ```
+
+4. Click **Run Query**.
+5. Customize visualization options (Table, Logs, Graph, etc.).
+6. Click **Save**.
+
+
+## **Final Thoughts**
+- **Promtail** collects logs from Laravel and sends them to **Loki**.
+- **Loki** stores logs for **Grafana** to visualize.
+- Grafana lets you filter, analyze, and create alerts based on Laravel logs.
