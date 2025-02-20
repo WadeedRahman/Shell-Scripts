@@ -1,0 +1,405 @@
+### **Popular DevSecOps Tools in the Market (2025)**  
+
+DevSecOps integrates security into the DevOps pipeline to ensure secure code deployments. Below are some popular **open-source** and **enterprise** tools used today:  
+
+---
+
+## **1. Static Application Security Testing (SAST)**
+✅ **Purpose**: Scans source code for vulnerabilities before deployment.  
+
+### 🔹 **Open-Source Tools for GitLab Pipeline**  
+- **[Semgrep](https://semgrep.dev/)** – Lightweight and fast static code analyzer.  
+- **[SonarQube Community](https://www.sonarsource.com/products/sonarqube/community/)** – Popular SAST tool with GitLab integration.  
+- **[Bandit](https://github.com/PyCQA/bandit)** – Python code security scanner.  
+- **[Gosec](https://github.com/securego/gosec)** – Security scanner for Golang.  
+- **[CodeQL](https://codeql.github.com/)** – Security analysis from GitHub, supports GitLab pipelines.  
+
+#### 🔹 **Enterprise Tools**
+- **Veracode** – Enterprise-grade security scanner.  
+- **Checkmarx** – Best for enterprise SAST and compliance.  
+- **Fortify Static Code Analyzer (SCA)** – Used in large enterprises.  
+
+---
+
+## **2. Software Composition Analysis (SCA)**
+✅ **Purpose**: Scans open-source dependencies for vulnerabilities.  
+
+### 🔹 **Open-Source Tools for GitLab**
+- **[Dependency-Check](https://jeremylong.github.io/DependencyCheck/)** – Detects vulnerabilities in Java, .NET, Python, and more.  
+- **[OWASP Dependency Track](https://dependencytrack.org/)** – SCA tool to manage software components.  
+- **[Trivy](https://github.com/aquasecurity/trivy)** – Scans dependencies, Docker images, and Git repositories.  
+- **[Syft](https://github.com/anchore/syft)** – Generates software bill of materials (SBOM).  
+
+#### 🔹 **Enterprise Tools**
+- **Snyk** – Best for enterprise-grade open-source dependency scanning.  
+- **WhiteSource (Mend)** – Open-source security management.  
+- **JFrog Xray** – Advanced dependency and container security.  
+
+---
+
+## **3. Dynamic Application Security Testing (DAST)**
+✅ **Purpose**: Scans running applications for security vulnerabilities.  
+
+### 🔹 **Open-Source Tools for GitLab**
+- **[ZAP (OWASP Zed Attack Proxy)](https://www.zaproxy.org/)** – Best open-source DAST tool for web apps.  
+- **[Nikto](https://cirt.net/nikto2)** – Scans web servers for vulnerabilities.  
+- **[Wapiti](https://wapiti.sourceforge.io/)** – Black-box web application scanner.  
+
+#### 🔹 **Enterprise Tools**
+- **Burp Suite Pro** – Industry leader for security testing.  
+- **Acunetix** – Automated DAST tool for enterprises.  
+- **Invicti (formerly Netsparker)** – Advanced web vulnerability scanning.  
+
+---
+
+## **4. Infrastructure as Code (IaC) Security**
+✅ **Purpose**: Scans Terraform, Kubernetes, and CloudFormation for security misconfigurations.  
+
+### 🔹 **Open-Source Tools for GitLab**
+- **[Checkov](https://github.com/bridgecrewio/checkov)** – Terraform, Kubernetes, and AWS security scanner.  
+- **[Terrascan](https://github.com/tenable/terrascan)** – IaC security analysis for Terraform.  
+- **[KICS (Keeping Infrastructure as Code Secure)](https://github.com/Checkmarx/kics)** – Best for multi-cloud IaC security.  
+
+#### 🔹 **Enterprise Tools**
+- **Palo Alto Prisma Cloud** – Advanced IaC security for enterprises.  
+- **AWS Security Hub** – Monitors cloud infrastructure security.  
+- **Azure Security Center** – Best for Azure environments.  
+
+---
+
+## **5. Container Security (Docker & Kubernetes)**
+✅ **Purpose**: Scans Docker containers and Kubernetes clusters for vulnerabilities.  
+
+### 🔹 **Open-Source Tools for GitLab**
+- **[Trivy](https://github.com/aquasecurity/trivy)** – Best container security scanner for GitLab.  
+- **[Clair](https://github.com/quay/clair)** – Scans container images for vulnerabilities.  
+- **[Grype](https://github.com/anchore/grype)** – Security scanner for container images.  
+- **[Kube-hunter](https://github.com/aquasecurity/kube-hunter)** – Kubernetes penetration testing tool.  
+
+#### 🔹 **Enterprise Tools**
+- **Aqua Security** – Best for container runtime security.  
+- **Sysdig Secure** – Container security with compliance features.  
+- **Twistlock (Prisma Cloud)** – Enterprise Kubernetes security.  
+
+---
+
+## **6. Secret Detection (Leaks Prevention)**
+✅ **Purpose**: Detects hardcoded secrets like API keys, passwords, and tokens.  
+
+### 🔹 **Open-Source Tools for GitLab**
+- **[Gitleaks](https://github.com/gitleaks/gitleaks)** – Detects secrets in Git repositories.  
+- **[TruffleHog](https://github.com/trufflesecurity/trufflehog)** – Finds API keys and credentials in repositories.  
+- **[GitGuardian CLI](https://github.com/GitGuardian/ggshield)** – Secret detection for Git repositories.  
+
+#### 🔹 **Enterprise Tools**
+- **GitGuardian** – Best for enterprise secret detection.  
+- **AWS Macie** – Finds sensitive data in AWS environments.  
+- **Vault by HashiCorp** – Secret management for enterprises.  
+
+---
+
+## **7. Compliance & Policy-as-Code**
+✅ **Purpose**: Ensures compliance with security policies (CIS, NIST, GDPR, etc.).  
+
+### 🔹 **Open-Source Tools for GitLab**
+- **[Open Policy Agent (OPA)](https://www.openpolicyagent.org/)** – Policy enforcement tool.  
+- **[Regula](https://github.com/fugue/regula)** – Compliance as Code for Terraform, AWS, and Kubernetes.  
+- **[InSpec](https://github.com/inspec/inspec)** – Compliance automation framework.  
+
+#### 🔹 **Enterprise Tools**
+- **Prisma Cloud** – Best for cloud security compliance.  
+- **AWS Config** – Monitors AWS configuration compliance.  
+- **Azure Policy** – Ensures compliance in Azure environments.  
+
+---
+
+## **8. Runtime Security & Intrusion Detection**
+✅ **Purpose**: Detects runtime security threats and suspicious activities.  
+
+### 🔹 **Open-Source Tools for GitLab**
+- **[Falco](https://falco.org/)** – Kubernetes runtime security monitoring.  
+- **[Wazuh](https://wazuh.com/)** – SIEM and host intrusion detection.  
+- **[Osquery](https://osquery.io/)** – Endpoint security monitoring.  
+
+#### 🔹 **Enterprise Tools**
+- **CrowdStrike Falcon** – Endpoint and runtime security.  
+- **Palo Alto XDR** – Advanced runtime security.  
+- **Microsoft Defender for Cloud** – Threat protection for cloud workloads.  
+
+---
+
+## **How to Integrate These Tools in GitLab CI/CD Pipeline**
+✅ **Example: Running Trivy for Container Scanning in GitLab**  
+```yaml
+stages:
+  - security
+
+trivy_scan:
+  image: aquasec/trivy
+  stage: security
+  script:
+    - trivy image my-app:latest
+```
+
+✅ **Example: Running SAST with Semgrep in GitLab**  
+```yaml
+stages:
+  - security
+
+semgrep_sast:
+  image: returntocorp/semgrep
+  stage: security
+  script:
+    - semgrep --config=auto --error
+```
+
+---
+
+## **Final Thoughts**
+For a **complete DevSecOps pipeline**, you can combine these tools:
+- **SAST** → **Semgrep / SonarQube**
+- **SCA** → **Trivy / Dependency-Check**
+- **DAST** → **OWASP ZAP**
+- **Container Security** → **Trivy / Grype**
+- **Secret Detection** → **Gitleaks / TruffleHog**
+- **IaC Security** → **Checkov / Terrascan**
+- **Compliance & Policy** → **OPA / Regula**
+- **Runtime Security** → **Falco / Wazuh**
+
+Would you like a full **GitLab CI/CD YAML file** integrating multiple security tools? 🚀
+
+
+
+
+
+
+
+### **Best Free & Open-Source DevSecOps Tools for Ubuntu Server in GitLab CI/CD**  
+
+The following **free and open-source** tools can be integrated into your **Ubuntu Server CI/CD pipeline** in **GitLab**. These tools cover security testing at different stages.
+
+---
+
+## **🔹 1. Static Application Security Testing (SAST)**
+✅ **Find vulnerabilities in source code before deployment.**  
+
+- **[Semgrep](https://semgrep.dev/)** → Lightweight and customizable static code analysis tool.  
+- **[SonarQube Community Edition](https://www.sonarqube.org/downloads/)** → Detects security vulnerabilities, code smells, and bugs.  
+- **[Bandit](https://github.com/PyCQA/bandit)** → Security scanner for Python applications.  
+- **[Gosec](https://github.com/securego/gosec)** → Security scanner for Go applications.  
+- **[CodeQL](https://codeql.github.com/)** → GitHub’s open-source security analysis tool for multiple languages.  
+
+✅ **GitLab CI/CD Example for Semgrep (SAST)**  
+```yaml
+stages:
+  - security
+
+semgrep_scan:
+  image: returntocorp/semgrep
+  stage: security
+  script:
+    - semgrep --config=auto --error .
+```
+
+---
+
+## **🔹 2. Software Composition Analysis (SCA)**
+✅ **Find vulnerabilities in open-source dependencies (e.g., npm, pip, Maven, etc.).**  
+
+- **[Trivy](https://github.com/aquasecurity/trivy)** → Scans OS, dependencies, and container images for vulnerabilities.  
+- **[Dependency-Check](https://jeremylong.github.io/DependencyCheck/)** → Scans Java, .NET, Python, and JavaScript dependencies.  
+- **[OWASP Dependency-Track](https://dependencytrack.org/)** → Software composition analysis tool.  
+
+✅ **GitLab CI/CD Example for Trivy (SCA)**  
+```yaml
+stages:
+  - security
+
+trivy_scan:
+  image: aquasec/trivy
+  stage: security
+  script:
+    - trivy fs . --severity HIGH,CRITICAL
+```
+
+---
+
+## **🔹 3. Dynamic Application Security Testing (DAST)**
+✅ **Find vulnerabilities in a running application.**  
+
+- **[OWASP ZAP](https://www.zaproxy.org/)** → Best open-source DAST tool for web applications.  
+- **[Nikto](https://cirt.net/nikto2)** → Scans web servers for vulnerabilities.  
+- **[Wapiti](https://wapiti.sourceforge.io/)** → Black-box web application security scanner.  
+
+✅ **GitLab CI/CD Example for OWASP ZAP (DAST)**  
+```yaml
+stages:
+  - security
+
+zap_scan:
+  image: owasp/zap2docker-stable
+  stage: security
+  script:
+    - zap-baseline.py -t https://myapp.example.com
+```
+
+---
+
+## **🔹 4. Infrastructure as Code (IaC) Security**
+✅ **Scan Terraform, Kubernetes, and CloudFormation for security misconfigurations.**  
+
+- **[Checkov](https://github.com/bridgecrewio/checkov)** → Scans Terraform, Kubernetes, and AWS configurations.  
+- **[Terrascan](https://github.com/tenable/terrascan)** → IaC security analysis for Terraform, Kubernetes, etc.  
+- **[KICS](https://github.com/Checkmarx/kics)** → Security scanning for Terraform, Ansible, CloudFormation, Kubernetes.  
+
+✅ **GitLab CI/CD Example for Checkov (IaC Security)**  
+```yaml
+stages:
+  - security
+
+checkov_scan:
+  image: bridgecrew/checkov
+  stage: security
+  script:
+    - checkov -d .
+```
+
+---
+
+## **🔹 5. Container Security (Docker & Kubernetes)**
+✅ **Scan Docker images and Kubernetes configurations.**  
+
+- **[Trivy](https://github.com/aquasecurity/trivy)** → Scans Docker images, filesystems, and repositories.  
+- **[Clair](https://github.com/quay/clair)** → Static analysis tool for container vulnerabilities.  
+- **[Grype](https://github.com/anchore/grype)** → Scans Docker images for vulnerabilities.  
+- **[Kube-hunter](https://github.com/aquasecurity/kube-hunter)** → Security scanning for Kubernetes clusters.  
+
+✅ **GitLab CI/CD Example for Trivy (Container Security)**  
+```yaml
+stages:
+  - security
+
+trivy_container_scan:
+  image: aquasec/trivy
+  stage: security
+  script:
+    - trivy image my-app:latest
+```
+
+---
+
+## **🔹 6. Secret Detection (Leaks Prevention)**
+✅ **Find hardcoded API keys, passwords, and tokens in code repositories.**  
+
+- **[Gitleaks](https://github.com/gitleaks/gitleaks)** → Detects secrets and credentials in Git repositories.  
+- **[TruffleHog](https://github.com/trufflesecurity/trufflehog)** → Scans Git repositories for exposed secrets.  
+- **[GitGuardian CLI](https://github.com/GitGuardian/ggshield)** → Prevents secret leaks in Git repositories.  
+
+✅ **GitLab CI/CD Example for Gitleaks (Secret Scanning)**  
+```yaml
+stages:
+  - security
+
+gitleaks_scan:
+  image: zricethezav/gitleaks
+  stage: security
+  script:
+    - gitleaks detect --source . --verbose
+```
+
+---
+
+## **🔹 7. Compliance & Policy as Code**
+✅ **Ensure compliance with security policies (CIS, NIST, GDPR, etc.).**  
+
+- **[Open Policy Agent (OPA)](https://www.openpolicyagent.org/)** → Policy enforcement for Kubernetes, Terraform, etc.  
+- **[Regula](https://github.com/fugue/regula)** → Compliance as Code for AWS, Terraform, Kubernetes.  
+- **[InSpec](https://github.com/inspec/inspec)** → Compliance automation framework.  
+
+✅ **GitLab CI/CD Example for OPA (Policy Enforcement)**  
+```yaml
+stages:
+  - security
+
+opa_check:
+  image: openpolicyagent/opa
+  stage: security
+  script:
+    - opa eval --data policy.rego --input input.json "data.example.allow"
+```
+
+---
+
+## **🔹 8. Runtime Security & Intrusion Detection**
+✅ **Detect security threats and monitor runtime behavior.**  
+
+- **[Falco](https://falco.org/)** → Kubernetes runtime security monitoring.  
+- **[Wazuh](https://wazuh.com/)** → SIEM and intrusion detection system (IDS).  
+- **[Osquery](https://osquery.io/)** → Endpoint security monitoring.  
+
+✅ **GitLab CI/CD Example for Falco (Runtime Security)**  
+```yaml
+stages:
+  - security
+
+falco_scan:
+  image: falcosecurity/falco
+  stage: security
+  script:
+    - falco --list
+```
+
+---
+
+## **🚀 Complete GitLab CI/CD Security Pipeline (Example)**
+This pipeline integrates multiple security tools.  
+
+```yaml
+stages:
+  - security
+
+sast_scan:
+  image: returntocorp/semgrep
+  stage: security
+  script:
+    - semgrep --config=auto --error .
+
+sca_scan:
+  image: aquasec/trivy
+  stage: security
+  script:
+    - trivy fs . --severity HIGH,CRITICAL
+
+dast_scan:
+  image: owasp/zap2docker-stable
+  stage: security
+  script:
+    - zap-baseline.py -t https://myapp.example.com
+
+iac_scan:
+  image: bridgecrew/checkov
+  stage: security
+  script:
+    - checkov -d .
+
+secret_scan:
+  image: zricethezav/gitleaks
+  stage: security
+  script:
+    - gitleaks detect --source . --verbose
+```
+
+---
+
+## **📌 Final Thoughts**
+### ✅ **Best Free DevSecOps Tools for GitLab CI/CD**
+- **SAST** → **Semgrep / SonarQube**
+- **SCA** → **Trivy / Dependency-Check**
+- **DAST** → **OWASP ZAP**
+- **Container Security** → **Trivy / Grype**
+- **Secret Detection** → **Gitleaks / TruffleHog**
+- **IaC Security** → **Checkov / KICS**
+- **Compliance** → **OPA / Regula**
+- **Runtime Security** → **Falco**
+
+Would you like a **step-by-step installation guide** for any of these tools? 🚀
