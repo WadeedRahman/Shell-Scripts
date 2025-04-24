@@ -1,0 +1,36 @@
+
+@Set up Adminer along phpmyadmin
+
+sudo apt update
+sudo apt install apache2 php libapache2-mod-php
+sudo mkdir -p /usr/share/adminer
+ sudo wget https://www.adminer.org/latest.php -O /usr/share/adminer/index.php
+echo '
+Alias /adminer /usr/share/adminer
+<Directory /usr/share/adminer>
+    Options FollowSymLinks
+    AllowOverride None
+    Require all granted
+</Directory>
+' | sudo tee /etc/apache2/conf-available/adminer.conf
+sudo a2enconf adminer
+sudo systemctl reload apache2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
