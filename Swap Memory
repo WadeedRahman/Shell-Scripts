@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Exit on error
+set -e
+
+# Size of swap
+SWAPFILE="/swapfile"
+SIZE="4G"
+
+echo "Creating $SIZE swap file at $SWAPFILE..."
+
+# Step 1: Create the swap file
+sudo fallocate -l $SIZE $SWAPFILE || sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=4096 status=progress
+
+# Step 2: Set correct permissions
+sudo chmod 600 $SWAPFILE
+
+# Step 3: Mark as swap
+sudo mkswap $SWAPFILE
+
+# Step 4: Enable swap
+sudo swapon $SWAPFILE
+
+# Step 5: Add to /etc/fstab if not already present
+if ! grep -q "$SWAPFILE" /etc/fstab; then
+  echo "$SWAPFILE none swap sw 0 0" | sudo tee -a /etc/fstab
+fi
+
+# Step 6: Set swappiness to 10 (optional)
+sudo sysctl vm.swappiness=10
+if ! grep -q "vm.swappiness" /etc/sysctl.conf; then
+  echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+fi
+
+echo "✅ Swap file created and enabled successfully."
