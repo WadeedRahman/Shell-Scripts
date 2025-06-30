@@ -1,11 +1,4 @@
-Great! Since you’ve:
 
-* ✅ Set up **PostgreSQL** on your **Ubuntu server**
-* ✅ Installed **Adminer** and **pgAdmin** on your **local machine**
-
-Now you want to **connect remotely** from your local tools (Adminer or pgAdmin) to the PostgreSQL database hosted on the Ubuntu server.
-
----
 
 ## ✅ Step-by-Step to Access PostgreSQL Remotely
 
@@ -114,7 +107,3 @@ Click **Save**
 ---
 
 ## ✅ Done!
-
-You should now be able to access your **remote PostgreSQL DB from Adminer and pgAdmin on your local machine.**
-
-Let me know if you're using Docker or need to make the connection secure (e.g., using SSH tunnel or SSL).
