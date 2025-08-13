@@ -1,0 +1,104 @@
+#Mirror code from github to azure 
+
+name: Mirror to Azure DevOps
+on:
+  push:
+    branches:
+      - main
+jobs:
+  push-to-azure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup Git Identity
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AZURE_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ssh.dev.azure.com >> ~/.ssh/known_hosts
+      - name: Sync with Azure DevOps and Push
+        run: |
+          git remote add azure
+          # Pull latest from Azure
+          git fetch azure main
+          git merge --no-edit azure/main || true
+          # Push merged changes
+          git push azure main
+
+
+#Mirror code from azure to github and deploy on server 
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+      - "release/*"
+variables:
+  - group: variablegroup # contains TOKEN for GitHub authentication
+stages:
+  # Stage 1: Deploy on self-hosted runner
+  - stage: DeployStage
+    displayName: "Deploy Stage"
+    jobs:
+      - job: Deploy
+        displayName: "Deploy Kabelifi App"
+        pool:
+          name: reactjsAppDeployment  # self-hosted pool
+        steps:
+          - script: |
+              cd /var/www/kabelifi-app
+              git pull origin main
+              npm install
+              npm run build
+              pm2 restart staging-kabelfi
+            displayName: "Deploy Kabelifi app"
+
+
+
+  # Stage 2: Mirror to GitHub on Microsoft-hosted runner
+  - stage: MirrorStage
+    displayName: "Mirror Stage"
+    dependsOn: DeployStage
+    jobs:
+      - job: Mirror
+        displayName: "Mirror Azure Repo to GitHub"
+        pool:
+          vmImage: "ubuntu-latest"
+        steps:
+          - checkout: self
+            persistCredentials: true
+            fetchDepth: 0   # Full history for mirroring
+          - script: |
+              set -e
+              echo "Adding GitHub remote..."
+              git remote remove github || true
+              git remote add github https://$(TOKEN)@github.com/....
+              echo "Fetching all branches..."
+              git fetch --all
+              CURRENT_BRANCH="$(Build.SourceBranchName)"
+              echo "Current branch is: $CURRENT_BRANCH"
+              echo "Checking if GitHub repo is empty..."
+              if [ -z "$(git ls-remote github)" ]; then
+                echo "GitHub repo is empty, creating branch $CURRENT_BRANCH..."
+                git push github "origin/$CURRENT_BRANCH:refs/heads/$CURRENT_BRANCH"
+              else
+                echo "Pushing all branches and tags to GitHub..."
+                git push github --all
+                git push github --tags
+              fi
+            displayName: "Mirror Azure Repo -> GitHub"
+
+
+
+
+
+
+
+
