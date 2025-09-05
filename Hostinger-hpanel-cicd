@@ -1,0 +1,71 @@
+#For frontend on hpanel file manager
+name: Deploy Frontend to Hostinger
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install
+      - name: Build (Next.js Export)
+        run: npm run export
+      - name: Deploy to Hostinger
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USER }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          port: ${{ secrets.HOSTINGER_PORT }}
+          source: "out/*"
+          target: "/home/u197127067/domains/quicksalesbook.com/public_html/dailybook/out"
+          strip_components: 1
+
+
+
+
+
+#For Laravel
+name: Deploy Laravel to Hostinger
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USER }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          port: ${{ secrets.HOSTINGER_PORT }}
+          script: |
+            cd /home/u197127067/domains/quicksalesbook.com/public_html/dailybook_api
+            git pull origin main
+            composer install --no-dev --optimize-autoloader
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+
+
+
+
+For secrets variable copy these from hostinger and paste your ssh private that public key you store on hostinger ssh
+HOSTINGER_HOST = 
+HOSTINGER_PORT = 
+HOSTINGER_USER =
+HOSTINGER_SSH_KEY = 
